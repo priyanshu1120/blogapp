@@ -2,93 +2,99 @@ import React, { useState } from "react";
 import { Box, Heading, HStack, Img, Input, Text } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { API } from "../Services/Api.js";
-import { useToast } from '@chakra-ui/react'
+import { useToast } from "@chakra-ui/react";
 
 const signupObj = {
-    name:"",
-    email:"",
-    password:""
-}
+  name: "",
+  email: "",
+  password: "",
+};
 
 const loginObj = {
-     email:"",
-    password:""
-}
+  email: "",
+  password: "",
+};
 const Login = () => {
   const [show, setShow] = useState(false);
-  const toast = useToast()
-  const [text,setText] = useState(signupObj)
-  const [login,setLogin] = useState(loginObj)
+  const toast = useToast();
+  const [text, setText] = useState(signupObj);
+  const [login, setLogin] = useState(loginObj);
+  const navigate = useNavigate();
 
-const  handleChange = (e)=>{
-     const {name,value} = e.target
-     setText({...text,[name]:value})
-}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setText({ ...text, [name]: value });
+  };
 
-const  handleLogin = (e)=>{
-     const {name,value} = e.target
-     setLogin({...login,[name]:value})
-}
+  const handleLogin = (e) => {
+    const { name, value } = e.target;
+    setLogin({ ...login, [name]: value });
+  };
 
-const handleSubmit  = async()=>{
-
-  if(text.name !="" && text.email !="" && text.password !=""){
-    try{
-      let res = await  API.userSignup(text)
-       if(res.isSuccess){
-         setShow(true)
+  const handleSubmit = async () => {
+    if (text.name != "" && text.email != "" && text.password != "") {
+      try {
+        let res = await API.userSignup(text);
+        if (res.isSuccess) {
+          setShow(true);
           toast({
-            title: 'Account created.',
+            title: "Account created.",
             description: `${res.data.msg}`,
-            status: 'success',
+            status: "success",
             duration: 3000,
             isClosable: true,
-            position:"top",
-          })
-          setText({...text,name:"",email:"",password:""})
-       }else if(res.isFailure){
-           toast({
-            title: 'Error.',
+            position: "top",
+          });
+          setText({ ...text, name: "", email: "", password: "" });
+        } else if (res.isFailure) {
+          toast({
+            title: "Error.",
             description: `${res.msg}`,
-            status: 'error',
+            status: "error",
             duration: 3000,
             isClosable: true,
-            position:"top",
-          })
-         setText({...text,name:"",email:"",password:""})
-       }
-    
-    }catch(err){
-    console.log(err)
-    if(err.isError){
-        toast({
-                title: 'Error.',
-                description: `${err.msg.message}`,
-                status: 'error',
-                duration: 2000,
-                isClosable: true,
-                position:"top",
-              })
+            position: "top",
+          });
+          setText({ ...text, name: "", email: "", password: "" });
         }
+      } catch (err) {
+        console.log(err);
+        if (err.isError) {
+          toast({
+            title: "Error.",
+            description: `${err.msg.message}`,
+            status: "error",
+            duration: 2000,
+            isClosable: true,
+            position: "top",
+          });
+        }
+      }
+    } else {
+      alert("ALL fields are required");
     }
-  }else{
-        alert("ALL fields are required")
-  }
-  
-}
+  };
 
-const LoginSubmit = async()=>{
-      try{
-        let res = await  API.userLogin(login)
-          console.log(res)
-      }catch(err){
-        
-      } 
-}
-
-
+  const LoginSubmit = async () => {
+    try {
+      let res = await API.userLogin(login);
+      console.log(res);
+      if (res.isSuccess) {
+        toast({
+          title: "Login Successfull.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+        navigate("/");
+      }
+    } catch (err) {
+      alert("password does not match");
+    }
+  };
 
   return (
     <Box
@@ -134,8 +140,8 @@ const LoginSubmit = async()=>{
               color="white"
               pl="5px"
               _placeholder={{ color: "white" }}
-              onChange = {show?handleLogin:handleChange}
-              value = {text.name}
+              onChange={show ? handleLogin : handleChange}
+              value={text.name}
               name="name"
             />
           </HStack>
@@ -159,9 +165,9 @@ const LoginSubmit = async()=>{
             color="white"
             pl="5px"
             _placeholder={{ color: "white" }}
-            onChange = {show?handleLogin:handleChange}
+            onChange={show ? handleLogin : handleChange}
             type="email"
-            value = {show?login.email:text.email}
+            value={show ? login.email : text.email}
             name="email"
           />
         </HStack>
@@ -183,8 +189,8 @@ const LoginSubmit = async()=>{
             type="password"
             pl="5px"
             _placeholder={{ color: "white" }}
-            onChange = {show?handleLogin:handleChange}
-            value = {show?login.password:text.password}
+            onChange={show ? handleLogin : handleChange}
+            value={show ? login.password : text.password}
             name="password"
           />
         </HStack>
@@ -205,7 +211,7 @@ const LoginSubmit = async()=>{
             variant="unstyled"
             color="white"
             cursor="pointer"
-            onClick = {show?LoginSubmit:handleSubmit}
+            onClick={show ? LoginSubmit : handleSubmit}
           />
         </Box>
         <Box w={["95%", "90%", "80%", "60%"]} m="auto" mt="10px">

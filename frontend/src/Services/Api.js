@@ -57,7 +57,7 @@ axiosInstance.interceptors.response.use(function (response) {
       if(error.response){
           // get the response with status of above 200 like a error
           console.log("ERROR IN RESPONSE: ", error);
-          return {
+       return  {
               isError: true,
               msg: API_NOTIFICATION_MESSAGES.responseFailure,
               code: error.response.status
