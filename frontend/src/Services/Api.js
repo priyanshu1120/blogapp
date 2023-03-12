@@ -59,7 +59,7 @@ axiosInstance.interceptors.response.use(function (response) {
           console.log("ERROR IN RESPONSE: ", error);
        return  {
               isError: true,
-              msg: API_NOTIFICATION_MESSAGES.responseFailure,
+              msg: error.response.data.msg ? error.response.data.msg :"something went wrong",
               code: error.response.status
           }
       

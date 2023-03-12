@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Heading, HStack, Img, Input, Text } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { API } from "../Services/Api.js";
 import { useToast } from "@chakra-ui/react";
+import { dataContext } from "../Context/DataProvider.jsx";
+
+
 
 const signupObj = {
   name: "",
@@ -22,7 +25,7 @@ const Login = () => {
   const [text, setText] = useState(signupObj);
   const [login, setLogin] = useState(loginObj);
   const navigate = useNavigate();
-
+  const {setAccount,setAuth} = useContext(dataContext)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setText({ ...text, [name]: value });
@@ -33,10 +36,12 @@ const Login = () => {
     setLogin({ ...login, [name]: value });
   };
 
+    /* --------------------------------signup functionality --------------------------*/
   const handleSubmit = async () => {
     if (text.name != "" && text.email != "" && text.password != "") {
       try {
         let res = await API.userSignup(text);
+        console.log(res)
         if (res.isSuccess) {
           setShow(true);
           toast({
@@ -47,6 +52,7 @@ const Login = () => {
             isClosable: true,
             position: "top",
           });
+    
           setText({ ...text, name: "", email: "", password: "" });
         } else if (res.isFailure) {
           toast({
@@ -64,7 +70,7 @@ const Login = () => {
         if (err.isError) {
           toast({
             title: "Error.",
-            description: `${err.msg.message}`,
+            description: `${err.msg}`,
             status: "error",
             duration: 2000,
             isClosable: true,
@@ -73,14 +79,14 @@ const Login = () => {
         }
       }
     } else {
-      alert("ALL fields are required");
+      alert("All fields are required");
     }
   };
 
+  /* --------------------------------login functionality --------------------------*/
   const LoginSubmit = async () => {
     try {
       let res = await API.userLogin(login);
-      console.log(res);
       if (res.isSuccess) {
         toast({
           title: "Login Successfull.",
@@ -89,7 +95,13 @@ const Login = () => {
           isClosable: true,
           position: "top",
         });
+        sessionStorage.setItem("accesstoken",`Barrer ${res.data.accessToken}`)
+        sessionStorage.setItem("refreshtoken",`Barrer ${res.data.refreshToken}`)
+        setAccount({name:res.data.name,email:res.data.email})
+        setLogin({ ...login, email: "", password: ""});
+        setAuth(true)
         navigate("/");
+
       }
     } catch (err) {
       alert("password does not match");
