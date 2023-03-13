@@ -1,5 +1,6 @@
 import {Routes,Route} from "react-router-dom"
 import PrivateRoute from "./Auth/PrivateRoute";
+import CreateBlog from "./Components/CreateBlog";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 
@@ -15,6 +16,7 @@ function App() {
               <Route path="/account" element={<Login/>}/> 
               <Route path="/contact" element= {<Contact/>}/>
               <Route path="/about" element= {<About/>}/>
+              <Route path="/create" element= {<PrivateRoute><CreateBlog/></PrivateRoute>}/>
         </Routes>   
     </div>
   );

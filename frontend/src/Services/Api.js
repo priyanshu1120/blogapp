@@ -23,7 +23,7 @@ axiosInstance.interceptors.request.use(function (config) {
     // }else if(config.TYPE.query){
     //     config.url = config.url + '/' + config.TYPE.query;
     // }
-    console.log(config)
+    // console.log(config)
     return config;
   }, function (error) {
     return Promise.reject(error);
@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use(function (config) {
 
 // Add a response interceptor
 axiosInstance.interceptors.response.use(function (response) {
-      console.log(response)
+      // console.log(response)
       return processResponse(response)
   }, function (error) {
     return Promise.reject(ProcessError(error));

@@ -21,14 +21,14 @@ const Navbar = () => {
         <Flex w="100%" h="70px" position="sticky" top="0px" justify="space-between" align="center" boxShadow='md' p='6' rounded='md' bg='white' >
             {
                 size>600 ? <>
-                <Flex w="130px" h="60px"  objectFit="cover"><Img src="/bloglogo.png" alt="logo" w="100%" h="100%" /></Flex>
+                <Flex w="130px" h="60px"><Img src="/bloglogo.png" objectFit="cover" alt="logo" w="100%" h="100%" /></Flex>
                 <Flex w={["70%","60%","40%"]} justify="space-between" align="center">
                 <Link to="/">Home</Link> 
                 <Link to="/contact">Contact</Link> 
                 <Link to="/About">About</Link> 
                 <Link to="/account" >SignUp</Link>
                 </Flex></> :<Flex w="100%" h="70px"  position="sticky" top="0px"  justify="space-between" align="center" boxShadow='none' p='0' rounded='md' bg='white'>
-                <Flex w="120px" h="60px"  objectFit="cover"><Img src="/bloglogo.png" alt="logo" w="100%" h="100%" /></Flex>
+                <Flex w="120px" h="60px"><Img src="/bloglogo.png" objectFit="cover" alt="logo" w="100%" h="100%" /></Flex>
                 <Flex w={["5%"]} justify="space-between" align="center">
                  <Mobile/>
                 </Flex>    

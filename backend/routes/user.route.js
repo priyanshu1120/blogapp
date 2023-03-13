@@ -31,7 +31,6 @@ userRouter.post("/signup", async (req, res) => {
 
 userRouter.post("/login",async(req,res)=>{
      let user = await userModel.findOne({email:req.body.email}) 
-     console.log(user)
       if(!user){
         res.status(400).send({msg:"user does not exits try to signup..."})
       }else{
