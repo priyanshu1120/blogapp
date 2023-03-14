@@ -5,6 +5,8 @@ import connect from "./config/db.js"
 import userRouter  from "./routes/user.route.js"
 import { fileRoute } from "./routes/fileUpload.route.js"
 import uploads from "./utils/uploads.js"
+import { blogRoute } from "./routes/blog.route.js"
+import { authenticateToken } from "./utils/authenticateToken.js"
 
 
 const app = express()
@@ -19,7 +21,7 @@ app.get("/",(req,res)=>{
 app.use("/user",userRouter)
 app.use("/fileupload",uploads.single("file"),fileRoute)
 app.use("/fileupload",fileRoute)
-
+app.use("/blog",authenticateToken,blogRoute)
 
 app.listen(process.env.PORT,async()=>{
      try{
