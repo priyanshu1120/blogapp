@@ -3,6 +3,7 @@ import PrivateRoute from "./Auth/PrivateRoute";
 import CreateBlog from "./Components/CreateBlog";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
+import DetailsBlog from "./Pages/DetailsBlog";
 
 import Home from "./Pages/Home";
 import Login from "./Pages/Login";
@@ -17,6 +18,7 @@ function App() {
               <Route path="/contact" element= {<Contact/>}/>
               <Route path="/about" element= {<About/>}/>
               <Route path="/create" element= {<PrivateRoute><CreateBlog/></PrivateRoute>}/>
+              <Route path="/blog/:id" element= {<PrivateRoute><DetailsBlog/></PrivateRoute>}/>
         </Routes>   
     </div>
   );

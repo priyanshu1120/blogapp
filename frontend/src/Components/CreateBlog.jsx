@@ -9,11 +9,12 @@ import {
   Text,
   Button,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { AiFillPicture } from "react-icons/ai";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { dataContext } from "../Context/DataProvider";
 import { API } from "../Services/Api";
 import axios from "axios";
@@ -32,7 +33,8 @@ const CreateBlog = () => {
   const [file, setFile] = useState("");
   const location = useLocation()
   const {account} = useContext(dataContext)
-
+  const navigate = useNavigate()
+const toast = useToast()
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPost({...post,[name]:value})
@@ -56,6 +58,33 @@ const CreateBlog = () => {
    post.username = account.name
   },[file])
 
+  const handleCreatePost = async()=>{
+  
+     try{
+      const res = await API.createPost(post)
+      toast({
+        title: "Blog Created Successfully.",
+        description: `${res.data.msg}`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top",
+      });
+        navigate("/")
+     }catch(err){
+        toast({
+          title: "something went wrong",
+          description: `${err.msg}`,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top",
+        });
+  
+  
+     }
+
+  }
 
   return (
     <Box>
@@ -80,7 +109,7 @@ const CreateBlog = () => {
             fontSize={["14px", "16px", "18px", "28px"]}
             transform={"translate(-50%,-50%)"}
           >
-            Choose your blog image
+          {post.picture?"":"Choose your blog image"}  
           </Text>
         </Box>
         <FormControl m="10px" display="flex" alignItems={"center"}>
@@ -106,6 +135,7 @@ const CreateBlog = () => {
             display="block"
             mr={["20px", "10px", "20px"]}
             pr={["50px", "30px"]}
+            onClick = {handleCreatePost}
           >
             Publish
           </Button>

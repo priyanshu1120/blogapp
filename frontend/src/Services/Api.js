@@ -2,6 +2,7 @@ import { CardBody } from "@chakra-ui/react";
 import axios from "axios"
 import { MdError } from "react-icons/md";
 import { API_NOTIFICATION_MESSAGES, service_URL } from "../Constants/ApiNotification";
+import { getAccessToken,getType } from "../Utils/CommonUtils";
 
 const API_URL = 'http://localhost:7500';
 
@@ -11,20 +12,19 @@ const axiosInstance = axios.create({
      headers:{
         "content-Type":"application/json"
      }
- 
 
 })
 
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(function (config) {
-    // if(config.TYPE.params){
-    //     config.params = config.TYPE.params
-    // }else if(config.TYPE.query){
-    //     config.url = config.url + '/' + config.TYPE.query;
-    // }
-    // console.log(config)
-    return config;
+   console.log(config)
+   if (config.Type.params) {
+    config.params = config.Type.params
+} else if (config.Type.query) {
+    config.url = config.url + '/' + config.Type.query;
+} 
+      return config;
   }, function (error) {
     return Promise.reject(error);
   });
@@ -86,11 +86,15 @@ axiosInstance.interceptors.response.use(function (response) {
 
   for (const [key, value] of Object.entries(service_URL)) {
     API[key] = (body) =>
-        axiosInstance({
+       axiosInstance({
             method: value.method,
             url:   value.url,
             data: body,
             responseType: value.responseType,
+            headers:{
+                Authorization:getAccessToken()
+            },
+            Type:getType(value,body)
           
         
             // onUploadProgress: function(progressEvent) {
